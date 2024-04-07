@@ -100,3 +100,4 @@ jobs:
         asset_path: ./redis-GunYu_darwin_amd64
         asset_name: redis-GunYu_darwin_amd64
         asset_content_type: application/octet-stream
+        
