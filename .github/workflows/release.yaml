@@ -28,7 +28,7 @@ jobs:
       run: |
         VERSION_TAG=${{ inputs.release-tag }}
         VERSION_TAG=${VERSION_TAG#v}                              # remove the 'v' prefix
-        echo "versonName=$VERSION_TAG" >> $GITHUB_OUTPUT          # "1.2.3"
+        echo "versionName=$VERSION_TAG" >> $GITHUB_OUTPUT          # "1.2.3"
 
     - name: Cleanup
       run: |
@@ -46,8 +46,8 @@ jobs:
 
     - name: Build 
       run: |
-        GOOS=linux GOARCH=amd64 go build -o redisGunYu-${{ steps.process-version.outputs.versonCode }}_linux_amd64
-        GOOS=darwin GOARCH=amd64 go build -o redisGunYu-${{ steps.process-version.outputs.versonCode }}_darwin_amd64
+        GOOS=linux GOARCH=amd64 go build -o redisGunYu-${{ steps.process-version.outputs.versionName }}_linux_amd64
+        GOOS=darwin GOARCH=amd64 go build -o redisGunYu-${{ steps.process-version.outputs.versionName }}_darwin_amd64
 
     - name: Create Release
       id: create_release
@@ -66,8 +66,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./redisGunYu-${{ steps.process-version.outputs.versonCode }}_linux_amd64
-        asset_name: redisGunYu-${{ steps.process-version.outputs.versonCode }}_linux_amd64
+        asset_path: ./redisGunYu-${{ steps.process-version.outputs.versionName }}_linux_amd64
+        asset_name: redisGunYu-${{ steps.process-version.outputs.versionName }}_linux_amd64
         asset_content_type: application/octet-stream
 
     - name: Upload Release Asset Darwin amd64
@@ -76,8 +76,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./redisGunYu-${{ steps.process-version.outputs.versonCode }}_darwin_amd64
-        asset_name: redisGunYu-${{ steps.process-version.outputs.versonCode }}_darwin_amd64
+        asset_path: ./redisGunYu-${{ steps.process-version.outputs.versionName }}_darwin_amd64
+        asset_name: redisGunYu-${{ steps.process-version.outputs.versionName }}_darwin_amd64
         asset_content_type: application/octet-stream
         
     - name: Release Changelog Builder
