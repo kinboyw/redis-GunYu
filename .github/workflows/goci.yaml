@@ -50,7 +50,10 @@ jobs:
           ${{ runner.os }}-go    
 
     - name: Build 
-      run: go build -v ./...
+      run: |
+        GOOS=linux GOARCH=amd64 go build -o redis-GunYu_linux_amd64
+        GOOS=darwin GOARCH=amd64 go build -o redis-GunYu_darwin_amd64
+        go build -v ./...
 
     - name: Test redis cluster
       uses: vishnudxb/redis-cluster@1.0.9
@@ -66,3 +69,34 @@ jobs:
     - name: Test 
       run: |
         go test -v ./...
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset Linux amd64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./redis-GunYu_linux_amd64
+        asset_name: redis-GunYu_linux_amd64
+        asset_content_type: application/octet-stream
+
+    - name: Upload Release Asset Darwin amd64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./redis-GunYu_darwin_amd64
+        asset_name: redis-GunYu_darwin_amd64
+        asset_content_type: application/octet-stream
