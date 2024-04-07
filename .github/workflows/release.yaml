@@ -85,7 +85,32 @@ jobs:
       with:
         configurationJson: |
           {
-            "ignore_labels": [
-              "Update"
+            "ignore_labels": ["Update"],
+            "sort": "ASC",
+            "categories": [
+              {
+                "title": "## 🚀 Features",
+                "labels": ["feature"]
+              },
+              {
+                "title": "## 🐛 Bug Fixes",
+                "labels": ["fix"]
+              },
+              {
+                "title": "## 🧰 Maintenance",
+                "labels": ["Maintenance"]
+              }
             ],
+            "exclude_issues_with_any_labels": true,
+            "includeOpen": false,
+            "ignorePreReleases": false,
+            "failOnError": false,
+            "fetchViaCommits": false,
+            "fetchReviewers": false,
+            "fetchReleaseInformation": false,
+            "fetchReviews": false,
+            "commitMode": false,
+            "token": ${{ secrets.GITHUB_TOKEN }},
+            "exportCache": false,
+            "exportOnly": false
           }
